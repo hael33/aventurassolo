@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>O Último Suspiro da Rua Augusta</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0d0d0d;
+      color: #e0e0e0;
+      font-family: 'IM Fell English', serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 700px;
+      padding: 20px;
+      text-align: center;
+    }
+    h1, h2 {
+      color: #b30000;
+    }
+    .choices button {
+      background-color: #1a1a1a;
+      border: 1px solid #b30000;
+      color: #e0e0e0;
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+    .choices button:hover {
+      background-color: #330000;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>O Último Suspiro da Rua Augusta</h1>
+    <div id="scene"></div>
+    <div class="choices" id="choices"></div>
+  </div>
+
+  <script>
+    const scenes = {
+      start: {
+        text: `Você é um vampiro recém-Abraçado em São Paulo. Sozinho. Faminto. Um bilhete aparece debaixo da porta:<br><br><em>"Se quiser entender por que foi escolhido, vá até o Cemitério da Consolação à meia-noite. Traga coragem, mas não armas. – V."</em>`,
+        choices: [
+          { text: "🕯️ Eu vou. Preciso entender.", next: "cemiterio" },
+          { text: "🚬 Ignoro. Ninguém manda em mim.", next: "ignorar" }
+        ]
+      },
+      cemiterio: {
+        text: `A chuva escorre entre os túmulos. Uma figura encapuzada se destaca na penumbra.<br><br>"Você é o legado de alguém que jurou proteger este domínio. Mas ele quebrou a Máscara. Está morto. Quer limpar o nome dele?"`,
+        choices: [
+          { text: "🩸 Sim. Me diga o que preciso fazer.", next: "rave" },
+          { text: "🧊 Não. Eu não devo nada a ninguém.", next: "tiro" }
+        ]
+      },
+      ignorar: {
+        text: `Você vira as costas. Algo brilha na noite. Um estampido. Um tiro.<br><br><strong>Você sangra. Está marcado pelos Caçadores.</strong>`,
+        choices: [
+          { text: "🏃 Fugir para sobreviver.", next: "fim_fuga" },
+          { text: "🩸 Aceitar o destino. Começar de novo?", next: "start" }
+        ]
+      },
+      tiro: {
+        text: `Você hesita. Um clarão. Um tiro. Você é atingido no ombro. Um gosto de ferro invade sua boca.<br><br><strong>Você foi avisado. O mundo não é gentil com indecisos.</strong>`,
+        choices: [
+          { text: "🏃 Fugir para sobreviver.", next: "fim_fuga" },
+          { text: "🩸 Aceitar o destino. Começar de novo?", next: "start" }
+        ]
+      },
+      rave: {
+        text: `Subsolo. Música pulsa. Lívia dança com um homem de olhos vazios. Você sente: ele é Lasombra.`,
+        choices: [
+          { text: "🧠 Observar primeiro.", next: "final_resiste" },
+          { text: "⚔️ Intervir imediatamente.", next: "final_fome" }
+        ]
+      },
+      final_resiste: {
+        text: `Você observa e espera. Quando ataca, é preciso. Lívia está viva. Você sente a fome... mas resiste.<br><br><strong>Humanidade intacta. Você venceu essa noite.</strong>`,
+        choices: [
+          { text: "🔁 Recomeçar", next: "start" }
+        ]
+      },
+      final_fome: {
+        text: `Você ataca o Lasombra e salva Lívia. Mas a fome fala mais alto.<br><br>Você se alimenta. Sobrevive. Mas a culpa marca sua alma.<br><br><strong>Você venceu. Mas a que preço?</strong>`,
+        choices: [
+          { text: "🔁 Recomeçar", next: "start" }
+        ]
+      },
+      fim_fuga: {
+        text: `Você corre pelas sombras. Ferido. Caçado. Um novo inimigo observa. Sua luta está só começando.`,
+        choices: [
+          { text: "🔁 Recomeçar", next: "start" }
+        ]
+      }
+    };
+
+    function renderScene(key) {
+      const scene = scenes[key];
+      document.getElementById("scene").innerHTML = `<p>${scene.text}</p>`;
+      const choicesDiv = document.getElementById("choices");
+      choicesDiv.innerHTML = "";
+      scene.choices.forEach(choice => {
+        const btn = document.createElement("button");
+        btn.textContent = choice.text;
+        btn.onclick = () => renderScene(choice.next);
+        choicesDiv.appendChild(btn);
+      });
+    }
+
+    renderScene("start");
+  </script>
+</body>
+</html>
